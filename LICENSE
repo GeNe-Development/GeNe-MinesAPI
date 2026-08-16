@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 Demeter Gergő
+Copyright (c) 2026 GeNeDev
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+NOTE: This license covers ONLY the GeNe-Mines API (the `dev.gene.genemines.api`
+package) — the public contract that third-party plugins compile against. The
+GeNe-Mines plugin itself is commercial software and is NOT covered by this
+license; it is distributed under its own purchase terms.
