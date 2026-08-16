@@ -1,9 +1,9 @@
-// genemines-api — a GeNe-Mines publikus fejlesztői szerződése.
+// genemines-api - a GeNe-Mines publikus fejlesztői szerződése.
 //
 // SZABÁLYOK:
 //  - CSAK interfészek, event-osztályok és adat-rekordok. Semmi implementáció,
 //    semmi GeNeLib, semmi utalás a plugin belső működésére.
-//  - Egyetlen függőség: Paper API compileOnly — a szerver adja futásidőben.
+//  - Egyetlen függőség: Paper API compileOnly - a szerver adja futásidőben.
 //  - EZT A CSOMAGOT (dev.gene.genemines.api) SENKI NEM RELOKÁLJA. Ettől működik
 //    a ServicesManager-megosztás: minden pluginnak bájtra ugyanaz az osztály
 //    kell lássa, és azt futásidőben a GeNe-Mines adja.
@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    // A szerver adja futásidőben — nem kerül az API jarba.
+    // A szerver adja futásidőben - nem kerül az API jarba.
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
 }
 

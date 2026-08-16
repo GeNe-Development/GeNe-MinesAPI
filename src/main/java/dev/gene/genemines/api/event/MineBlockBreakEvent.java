@@ -12,22 +12,22 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 /**
- * Fired when a player breaks a block that is part of a mine's respawn cycle —
+ * Fired when a player breaks a block that is part of a mine's respawn cycle -
  * either an ore or the mine's filler block.
  *
  * <p>This event is fired on the main thread <b>before</b> GeNe-Mines applies any
  * of its own side effects (dropping items, advancing the block chain, replacing
  * the block), so your decision here always wins.</p>
  *
- * <p><b>Drops:</b> {@link #getDrops()} is a live, mutable list — add, remove or
- * replace entries to implement fortune-style bonuses, custom items or multiplied
- * yields. Whatever the list contains when the event returns is exactly what drops
- * (GeNe-Mines suppresses the vanilla drop in that case, so nothing is duplicated).
- * The list starts out as the configured drop of the mine, or the vanilla drop if
- * the mine has none configured.</p>
+ * <p>{@link #getDrops()} hands you a live, mutable list. Add, remove or replace
+ * entries to build fortune-style bonuses, custom items or multiplied yields;
+ * whatever the list holds when the event returns is exactly what drops. The
+ * vanilla drop is suppressed in that case, so nothing ends up duplicated. The
+ * list starts out as the mine's configured drop, falling back to the vanilla
+ * drop when the mine has none.</p>
  *
- * <p><b>Cancelling:</b> a cancelled event stops everything — the block stays put,
- * nothing drops, and the respawn chain is not advanced.</p>
+ * <p>Cancelling stops all of it: the block stays put, nothing drops, and the
+ * respawn chain is not advanced.</p>
  *
  * <pre>{@code
  * @EventHandler
@@ -56,8 +56,6 @@ public class MineBlockBreakEvent extends Event implements Cancellable {
     private boolean cancelled;
 
     /**
-     * Constructed by GeNe-Mines — consumers only receive this event.
-     *
      * @param player          the player breaking the block
      * @param mineId          the mine's id
      * @param mineDisplayName the mine's display name (MiniMessage format)
@@ -78,7 +76,6 @@ public class MineBlockBreakEvent extends Event implements Cancellable {
         this.drops = drops;
     }
 
-    /** The player breaking the block. */
     public Player getPlayer() {
         return player;
     }
@@ -103,14 +100,13 @@ public class MineBlockBreakEvent extends Event implements Cancellable {
         return stage;
     }
 
-    /** The material of the broken block. */
     public Material getMaterial() {
         return material;
     }
 
     /**
-     * The live, mutable list of items that will drop. Modify it in place;
-     * an empty list means nothing drops.
+     * The live, mutable list of items that will drop. Modify it in place; an
+     * empty list means nothing drops.
      *
      * @return the mutable drop list; never {@code null}
      */

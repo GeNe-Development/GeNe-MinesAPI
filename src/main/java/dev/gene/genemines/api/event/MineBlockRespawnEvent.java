@@ -7,17 +7,16 @@ import org.bukkit.event.HandlerList;
 
 /**
  * Fired on the main thread right after a block advanced a step in the respawn
- * chain — bedrock became filler, or filler became ore. The block already has its
+ * chain - bedrock became filler, or filler became ore. The block already has its
  * new type when the event is fired.
  *
  * <p>Useful for statistics, particle or sound effects, and live mine displays.</p>
  *
- * <p><b>Not cancellable, by design.</b> The plugin's respawn bookkeeping (the
- * tracked-block map and the time-ordered queue) has already advanced by the time
- * the world is touched; letting a listener veto the block change would leave the
- * world and that bookkeeping permanently out of sync — the block would be stuck
- * with no scheduled respawn. To keep players out of a mine, use
- * {@link MineAccessCheckEvent}; to stop a break, cancel
+ * <p>Not cancellable, and that is deliberate. By the time the world is touched
+ * the respawn bookkeeping (the tracked-block map and the time-ordered queue) has
+ * already moved on, so a listener vetoing the block change would leave the two
+ * permanently out of sync and strand the block with no scheduled respawn. To keep
+ * players out of a mine use {@link MineAccessCheckEvent}; to stop a break, cancel
  * {@link MineBlockBreakEvent}.</p>
  *
  * <pre>{@code
@@ -38,7 +37,7 @@ public class MineBlockRespawnEvent extends Event {
     private final MineStage newStage;
 
     /**
-     * Constructed by GeNe-Mines — consumers only receive this event.
+     * Called by GeNe-Mines once the block already carries its new type.
      *
      * @param mineId   the mine's id
      * @param block    the block that just changed
@@ -50,7 +49,6 @@ public class MineBlockRespawnEvent extends Event {
         this.newStage = newStage;
     }
 
-    /** The mine's id. */
     public String getMineId() {
         return mineId;
     }
@@ -60,7 +58,6 @@ public class MineBlockRespawnEvent extends Event {
         return block;
     }
 
-    /** The stage the block is now in. */
     public MineStage getNewStage() {
         return newStage;
     }

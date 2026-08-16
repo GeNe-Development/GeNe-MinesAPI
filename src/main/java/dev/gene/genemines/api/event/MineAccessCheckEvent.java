@@ -6,22 +6,22 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
- * Fired whenever GeNe-Mines decides whether a player may enter a mine — from the
+ * Fired whenever GeNe-Mines decides whether a player may enter a mine - from the
  * GUI picker, the teleport command, the text list and
  * {@link dev.gene.genemines.api.MinesAPI#canAccess}. The plugin uses the final
  * (possibly overridden) decision everywhere, so the GUI, the list and the actual
  * teleport always agree with each other.
  *
- * <p>Fired on the main thread. It carries the plugin's own verdict; override it
- * with {@link #setAllowed(boolean)} to implement your own rule (rank, quest,
- * party, playtime, …) instead of — or on top of — the built-in permission and
- * EcoSkills checks.</p>
+ * <p>Fired on the main thread, carrying the plugin's own verdict. Override it
+ * with {@link #setAllowed(boolean)} to apply your own rule (rank, quest, party,
+ * playtime, whatever you track) either instead of or on top of the built-in
+ * permission and EcoSkills checks.</p>
  *
  * <p>When you deny access, set a message with {@link #setDenialMessage(String)};
  * leave it {@code null} to keep the plugin's own message for
  * {@link #getReason()}. The message is sent in MiniMessage format.</p>
  *
- * <p>This event is not cancellable by design: "cancelled" has no meaning for a
+ * <p>There is no cancel here on purpose, since "cancelled" means nothing for a
  * yes/no question. Use {@link #setAllowed(boolean)}.</p>
  *
  * <pre>{@code
@@ -53,7 +53,7 @@ public class MineAccessCheckEvent extends Event {
     private String denialMessage;
 
     /**
-     * Constructed by GeNe-Mines — consumers only receive this event.
+     * Built by GeNe-Mines; listeners only ever see the finished event.
      *
      * @param player             the player being checked
      * @param mineId             the mine's id
@@ -77,24 +77,22 @@ public class MineAccessCheckEvent extends Event {
         this.currentLevel = currentLevel;
     }
 
-    /** The player trying to enter. */
     public Player getPlayer() {
         return player;
     }
 
-    /** The mine's id. */
     public String getMineId() {
         return mineId;
     }
 
-    /** The current verdict — the plugin's own, or yours if you already changed it. */
+    /** The current verdict: the plugin's own, or yours if you already changed it. */
     public boolean isAllowed() {
         return allowed;
     }
 
     /**
-     * Overrides the verdict. GeNe-Mines uses the value left here when the event
-     * returns.
+     * Overrides the verdict. Whatever is left here when the event returns is what
+     * GeNe-Mines acts on.
      *
      * @param allowed {@code true} to let the player in, {@code false} to deny
      */

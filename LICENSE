@@ -23,6 +23,6 @@ SOFTWARE.
 ---
 
 NOTE: This license covers ONLY the GeNe-Mines API (the `dev.gene.genemines.api`
-package) — the public contract that third-party plugins compile against. The
+package) - the public contract that third-party plugins compile against. The
 GeNe-Mines plugin itself is commercial software and is NOT covered by this
 license; it is distributed under its own purchase terms.

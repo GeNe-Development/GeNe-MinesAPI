@@ -8,8 +8,8 @@ import org.bukkit.event.HandlerList;
  * ore fill ({@code /mines generate}) or a layout restore that runs at startup for
  * a locked mine.
  *
- * <p>Purely informational — useful for logging, notifications or refreshing your
- * own caches once a mine's contents changed wholesale.</p>
+ * <p>Purely informational. Good for logging, notifications, or refreshing your
+ * own caches after a mine's contents changed wholesale.</p>
  *
  * <pre>{@code
  * @EventHandler
@@ -39,8 +39,6 @@ public class MineGenerationCompleteEvent extends Event {
     private final long durationMillis;
 
     /**
-     * Constructed by GeNe-Mines — consumers only receive this event.
-     *
      * @param mineId         the mine's id
      * @param type           which operation finished
      * @param blocksPlaced   how many blocks were placed (ores for {@code GENERATE},
@@ -54,12 +52,10 @@ public class MineGenerationCompleteEvent extends Event {
         this.durationMillis = durationMillis;
     }
 
-    /** The mine's id. */
     public String getMineId() {
         return mineId;
     }
 
-    /** Which operation finished. */
     public Type getType() {
         return type;
     }

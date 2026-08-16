@@ -1,11 +1,11 @@
 # GeNe-Mines API
 
-Developer API for the [GeNe-Mines](https://genedev.hu/) Paper plugin — hook your own
+Developer API for the [GeNe-Mines](https://genedev.hu/) Paper plugin - hook your own
 plugin into the mines: change drops, override who may enter, react to respawns.
 
 The API itself is MIT licensed (see [LICENSE](LICENSE)); the GeNe-Mines plugin is
 commercial software sold separately. You only need the plugin on the server at
-runtime — building against this API is free.
+runtime - building against this API is free.
 
 ---
 
@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    // compileOnly — GeNe-Mines provides these classes at runtime.
+    // compileOnly - GeNe-Mines provides these classes at runtime.
     compileOnly("dev.gene:genemines-api:1.0.0")
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
 }
@@ -42,7 +42,7 @@ Maven:
 
 > ### ⚠️ Never shade or relocate this API
 >
-> Use `compileOnly` / `provided` — **never** `implementation`, and **never** run it
+> Use `compileOnly` / `provided` - **never** `implementation`, and **never** run it
 > through shadow's `relocate`. At runtime the classes come from GeNe-Mines itself.
 > If you relocate them, your `dev.yourplugin.libs.genemines.api.MinesAPI` is a
 > *different class* from the one GeNe-Mines registered, the ServicesManager lookup
@@ -56,7 +56,7 @@ softdepend: [ GeNe-Mines ]   # or depend: [ GeNe-Mines ] if your plugin is usele
 
 ---
 
-## Getting the API — with graceful fallback
+## Getting the API - with graceful fallback
 
 `softdepend` means your plugin also loads when GeNe-Mines is absent, so always
 null-check the lookup:
@@ -75,10 +75,10 @@ public final class MineAddon extends JavaPlugin {
     public void onEnable() {
         mines = getServer().getServicesManager().load(MinesAPI.class);
         if (mines == null) {
-            getLogger().info("GeNe-Mines not found — mine integration disabled.");
+            getLogger().info("GeNe-Mines not found - mine integration disabled.");
             return;
         }
-        // your own listeners — see the examples below
+        // your own listeners - see the examples below
         getServer().getPluginManager().registerEvents(new FortuneListener(), this);
         getServer().getPluginManager().registerEvents(new MiningQuestListener(mines), this);
         getLogger().info("Hooked into GeNe-Mines: " + mines.mineIds());
@@ -90,8 +90,8 @@ public final class MineAddon extends JavaPlugin {
 }
 ```
 
-**Threading:** every `MinesAPI` method and every event runs on the server main
-thread. Don't call the API from an async task.
+Every `MinesAPI` method and every event runs on the server main thread, so don't
+call the API from an async task.
 
 ---
 
@@ -101,9 +101,9 @@ All events live in `dev.gene.genemines.api.event` and are ordinary Bukkit events
 
 | Event | Cancellable | Fired when |
 |---|---|---|
-| `MineBlockBreakEvent` | ✅ | A player breaks an ore or filler block in a mine — **before** the plugin applies any side effect |
+| `MineBlockBreakEvent` | ✅ | A player breaks an ore or filler block in a mine - **before** the plugin applies any side effect |
 | `MineAccessCheckEvent` | ❌ (use `setAllowed`) | GeNe-Mines decides whether a player may enter a mine |
-| `MineBlockRespawnEvent` | ❌ | A block advanced a step in the respawn chain (bedrock→filler, filler→ore) |
+| `MineBlockRespawnEvent` | ❌ | A block advanced a step in the respawn chain (bedrock->filler, filler->ore) |
 | `MineGenerationCompleteEvent` | ❌ | A `/mines generate` fill or a startup layout restore finished |
 
 ### `MineBlockBreakEvent`
@@ -112,12 +112,12 @@ Fires before the drop is created and before the block chain advances, so both yo
 cancel and your drop edits take effect.
 
 - `getPlayer()`, `getMineId()`, `getMineDisplayName()`, `getBlock()`, `getMaterial()`
-- `getStage()` — `MineStage.ORE` or `MineStage.FILLER`
-- `getDrops()` — **live, mutable list**. It starts as the mine's configured drop, or
+- `getStage()` - `MineStage.ORE` or `MineStage.FILLER`
+- `getDrops()` - **live, mutable list**. It starts as the mine's configured drop, or
   the vanilla drop if none is configured. Whatever it contains when the event
   returns is exactly what drops (the vanilla drop is suppressed, so nothing
   duplicates). An empty list means nothing drops.
-- `setCancelled(true)` — nothing happens at all: the block stays, no drops, no chain.
+- `setCancelled(true)` - nothing happens at all: the block stays, no drops, no chain.
 
 Drops created this way still belong to the breaking player for the configured
 ownership window, exactly like normal mine drops.
@@ -125,13 +125,13 @@ ownership window, exactly like normal mine drops.
 ### `MineAccessCheckEvent`
 
 Fires from the GUI picker, the text list, the teleport command and
-`MinesAPI.canAccess` — one central decision, so the menu and the actual teleport can
+`MinesAPI.canAccess` - one central decision, so the menu and the actual teleport can
 never disagree.
 
-- `isAllowed()` / `setAllowed(boolean)` — the verdict; yours wins
-- `getReason()` — why the *plugin* would deny (`PERMISSION`, `SKILL_LEVEL`, or `NONE`)
+- `isAllowed()` / `setAllowed(boolean)` - the verdict; yours wins
+- `getReason()` - why the *plugin* would deny (`PERMISSION`, `SKILL_LEVEL`, or `NONE`)
 - `getRequiredPermission()`, `getRequiredSkill()`, `getRequiredLevel()`, `getCurrentLevel()`
-- `setDenialMessage(String)` — MiniMessage text sent when the final verdict is "denied";
+- `setDenialMessage(String)` - MiniMessage text sent when the final verdict is "denied";
   leave it unset to keep the plugin's own message
 
 ### `MineBlockRespawnEvent`
@@ -165,12 +165,12 @@ scheduled respawn. Not fired for the bulk state restore that runs at server star
 plus the convenience `open()`.
 
 Deliberately **not** offered: creating or deleting mines at runtime, writing the ore
-layout, or manipulating the respawn queue — those would make the plugin's internal
+layout, or manipulating the respawn queue - those would make the plugin's internal
 state fragile. Mines are configured by the server owner in `config.yml`.
 
 ---
 
-## Example 1 — Fortune-style drop bonus
+## Example 1 - Fortune-style drop bonus
 
 Give players with a permission a chance at extra ore, and always add a rare gem.
 
@@ -217,7 +217,7 @@ public class FortuneListener implements Listener {
 }
 ```
 
-## Example 2 — Your own access rule based on rank
+## Example 2 - Your own access rule based on rank
 
 Replace the built-in skill requirement of one mine with a rank check from your own
 plugin.
@@ -256,9 +256,9 @@ public class RankAccessListener implements Listener {
 ```
 
 Because the plugin routes every check through this event, the mine also shows as
-locked in the `/mines` GUI for players without the rank — no extra work needed.
+locked in the `/mines` GUI for players without the rank - no extra work needed.
 
-## Example 3 — Quest progress for mining
+## Example 3 - Quest progress for mining
 
 Count ores mined per player and complete a quest, using both the break event and the
 API for context.
@@ -327,4 +327,4 @@ and new event classes, so a plugin compiled against `1.0.0` keeps working with l
 `1.x` releases of GeNe-Mines. Breaking changes would only come with a major bump, and
 never silently.
 
-Questions or a use case the API doesn't cover? → https://genedev.hu/
+Questions or a use case the API doesn't cover? -> https://genedev.hu/
